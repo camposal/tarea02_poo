@@ -29,4 +29,34 @@ public final class Validador {
         return cifraValidada;
     }
 
+    public static String validarString(String texto, boolean esEstricto) {
+        if (texto == null || texto.strip().isEmpty()) {
+            throw new IllegalArgumentException("El campo no puede estar vacio.");
+        }
+
+        texto = texto.strip();
+        String regex = esEstricto ? "^[\\p{L}]+(\\s+[\\p{L}]+)*$" : "^[\\p{L}\\d]+(\\s+[\\p{L}\\d]+)*$";
+
+        if (!texto.matches(regex)) {
+            String detalle = esEstricto ? "letras y espacios." : "letras, numeros y espacios.";
+            throw new IllegalArgumentException("El campo solo puede contener " + detalle);
+        }
+
+        return texto.toUpperCase();
+    }
+
+    public static String validarCorreo(String correo) {
+        // Formato aceptado: abc@dominio.ext sin espacios
+        if (correo == null || correo.strip().isEmpty()) {
+            throw new IllegalArgumentException("El correo no puede estar vacio.");
+        }
+
+        correo = correo.strip();
+        if (!correo.matches("^[^\\s@]+@[^\\s@]+\\.[^\\s@]{2,}$")) {
+            throw new IllegalArgumentException("El correo no tiene un formato valido.");
+        }
+
+        return correo.toLowerCase();
+    }
+
 }
